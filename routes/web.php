@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AutomobileController;
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'service'], function () {
+    Route::group(['prefix' => 'view'], function () {
+        Route::get('deactivate-clients', [ClientController::class, 'deactivateClients']);
+        Route::get('cars/{id}', [AutomobileController::class, 'getCarClient']);
+        Route::get('active/{number}', [AutomobileController::class, 'activeStatus']);
+        Route::get('deactivate/{number}', [AutomobileController::class, 'deActiveStatus']);
+        Route::get('active-cars', [AutomobileController::class, 'getActiveCars']);
+    });
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('auto', AutomobileController::class);
 });
+
+
+Route::get('/{any}', function () {
+    return view('index');
+})->where('any', '.*');

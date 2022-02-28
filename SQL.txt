@@ -1,0 +1,69 @@
+// get client
+
+//       $client = DB::select('SELECT * FROM clients INNER JOIN automobiles ON clients.id=automobiles.client_id WHERE clients.id = :id', [':id' => $id]);
+
+// update client
+ 
+DB::select('UPDATE clients SET name=:name, sex=:sex, address=:address, phone=:phone WHERE id = :id ', [
+                'name' => $name,
+                'sex' => $sex,
+                'address' => $address,
+                'phone' => $phone,
+                'id' => $id
+            ]);
+        }
+
+// update car
+
+DB::select('UPDATE automobiles SET brand=:brand, model=:model, gov_number=:number, color=:color WHERE automobiles.id = :id ',
+                    [
+                        ':brand' => $brand,
+                        ':model' => $model,
+                        ':color' => $color,
+                        ':number' => $number,
+                        ':id' => $auto_id,
+                    ]);
+
+// update number
+DB::select('UPDATE automobiles SET status=0 WHERE gov_number=:gov_number', ['gov_number' => $gov_number]);
+
+// delete
+DB::select('DELETE FROM automobiles WHERE id=:id ', [':id' => $id]);
+
+
+
+// newCar INSERT
+DB::select('INSERT INTO automobiles (brand, model, color, gov_number, client_id, status) VALUES (:brand, :model, :color, :gov_number, :client_id, :status)',
+                    [
+                        ':brand' => $brand,
+                        ':model' => $model,
+                        ':color' => $color,
+                        ':gov_number' => $number,
+                        ':client_id' => $id,
+                        ':status' => 1
+                    ]);
+
+
+//get id phone
+
+$id = DB::select('SELECT id FROM clients WHERE phone=:phone', [':phone' => $phone]);
+
+
+// INSERT CLIENTS
+
+DB::select('INSERT INTO clients (name, sex, phone, address, automobiles) VALUES (:name, :sex, :phone, :address, :automobiles)',
+                [
+                    ':name' => $name,
+                    ':sex' => $sex,
+                    ':phone' => $phone,
+                    ':address' => $address,
+                    ':automobiles' => $cars]);
+
+
+// GET CAR CLIENT
+return DB::select('SELECT * FROM automobiles WHERE client_id=:id', [':id' => $id]);
+
+
+// get cars in parking
+return DB::select('SELECT * FROM automobiles WHERE status=1');
+
